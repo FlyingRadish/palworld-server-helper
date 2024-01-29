@@ -23,14 +23,14 @@ type HelperConfig struct {
 }
 
 func main() {
-	fmt.Println("pal server helper started")
-	fmt.Println("loading config...")
+	log("pal server helper started")
+	log("loading config...")
 	config, err := loadConfig("helper_config.json")
 	if err != nil {
 		fmt.Println("Error loading config:", err)
 		return
 	}
-	fmt.Println("Connect to server...")
+	log("Connect to server...")
 	client := pal.NewPalClient()
 	connectErr := client.Connect(config.ServerIPAndPort, config.ServerPassword)
 	if connectErr != nil {
@@ -51,6 +51,11 @@ func main() {
 	defer client.Close()
 }
 
+func log(message string) {
+	currentTime := time.Now()
+	formattedTime := currentTime.Format("2006-01-02 15:04:05")
+	fmt.Println(formattedTime + ": " + message)
+}
 
 func loadConfig(filename string) (HelperConfig, error) {
 	file, err := os.Open(filename)
@@ -85,7 +90,7 @@ func monitorMemoryUsage(client *pal.PalClient, config HelperConfig) {
 			}
 
 			usedPercent := memory.UsedPercent
-			fmt.Printf("Current memory usage: %.2f%%\n", usedPercent)
+			log(fmt.Sprintf("Current memory usage: %.2f%%\n", usedPercent))
 			if usedPercent > config.OOMThreshold {
 				wg.Add(2)
 				go notifyReboot(&wg, client, config)
@@ -99,7 +104,7 @@ func monitorMemoryUsage(client *pal.PalClient, config HelperConfig) {
 func notifyReboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig) {
 	defer wg.Done()
 	// 执行通知重启操作
-	fmt.Println("Notify to reboot")
+	log("Notify to reboot")
 	seconds := strconv.Itoa(config.RebootSeconds)
 	client.Reboot(seconds)
 	countdown := config.RebootSeconds
@@ -114,19 +119,19 @@ func notifyReboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig
 
 func reboot(wg *sync.WaitGroup, config HelperConfig) {
 	defer wg.Done()
-	fmt.Println("Waiting to restart...")
+	log("Waiting to restart...")
 	time.Sleep(10 * time.Second)
 	// 执行重启操作
-	fmt.Println("Rebooting...")
+	log("Rebooting...")
 	cmd := exec.Command("sh", config.RebootScriptPath)
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println("Failed to execute reboot script:", err)
 	} else {
-		fmt.Println("Reboot script executed successfully")
+		log("Reboot script executed successfully")
 		// 阻塞2分钟，等待服务重启
-		fmt.Println("Waiting for service to restart...")
+		log("Waiting for service to restart...")
 		time.Sleep(2 * time.Minute)
-		fmt.Println("Service restarted")
+		log("Service restarted")
 	}
 }
