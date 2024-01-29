@@ -1,8 +1,8 @@
 {
-	"serverIPAndPort": "127.0.0.1:25570",
+    "serverIPAndPort": "127.0.0.1:25570",
     "serverPassword": "srv_pwd",
     "rebootScriptPath": "/path/to/you/restart.sh",
-	"oomThreshold": 70,
-	"checkIntervalSeconds": 5,
-	"rebootSeconds": 60
+    "oomThreshold": 70,
+    "checkIntervalSeconds": 5,
+    "rebootSeconds": 60
 }

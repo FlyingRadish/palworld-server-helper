@@ -10,8 +10,7 @@
 Ubuntu x64
 
 ## 使用方法
-### 1. 下载文件
-### 2. 服务器配置开启Rcon
+### 1. 服务器配置开启Rcon
 修改你的服务器配置文件，确保以下配置
 ```
 RCONEnabled=True,RCONPort=25570
@@ -20,12 +19,12 @@ RCONEnabled=True,RCONPort=25570
 修改`helper_config.json`
 ```
 {
-	"serverIPAndPort": "127.0.0.1:25570",           #服务器Rcon的IP和密码
+    "serverIPAndPort": "127.0.0.1:25570",           #服务器Rcon的IP和密码
     "serverPassword": "srv_pwd",                    #服务器Rcon密码
     "rebootScriptPath": "/path/to/you/restart.sh",  #重启服务器的脚本路径
-	"oomThreshold": 70,                             #内存阈值，超出该值将重启
-	"checkIntervalSeconds": 5,                      #内存占用检查间隔，如每5s检查一次
-	"rebootSeconds": 60                             #重启倒计时，单位秒
+    "oomThreshold": 70,                             #内存阈值，超出该值将重启
+    "checkIntervalSeconds": 5,                      #内存占用检查间隔，如每5s检查一次
+    "rebootSeconds": 60                             #重启倒计时，单位秒
 }
 ```
 ### 3. 创建后台服务
