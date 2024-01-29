@@ -142,5 +142,10 @@ func reboot(wg *sync.WaitGroup, config HelperConfig) {
 		log("Waiting for service to restart...")
 		time.Sleep(2 * time.Minute)
 		log("Service restarted")
+		connectErr := client.Connect(config.ServerIPAndPort, config.ServerPassword)
+		if connectErr != nil {
+			fmt.Println(connectErr)
+			return
+		}
 	}
 }

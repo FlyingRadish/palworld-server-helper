@@ -20,6 +20,7 @@ func (client *PalClient) Connect(ip string, password string) error {
         return fmt.Errorf("Failed to connect to RCON server: %v", err)
     }
     client.conn = conn
+    log("RCON connected")
     return nil
 }
 
