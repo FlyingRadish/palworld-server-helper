@@ -103,7 +103,7 @@ func monitorMemoryUsage(client *pal.PalClient, config HelperConfig) {
 			if usedPercent > config.OOMThreshold {
 				wg.Add(2)
 				notifyReboot(&wg, client, config)
-				reboot(&wg, config)
+				reboot(&wg, client, config)
 				wg.Wait() // 阻塞，直到重启完成
 			}
 		}
@@ -126,7 +126,7 @@ func notifyReboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig
 }
 
 
-func reboot(wg *sync.WaitGroup, config HelperConfig) {
+func reboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig) {
 	defer wg.Done()
 	log("Waiting to restart...")
 	time.Sleep(10 * time.Second)
