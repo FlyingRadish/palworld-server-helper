@@ -102,8 +102,8 @@ func monitorMemoryUsage(client *pal.PalClient, config HelperConfig) {
 			log(fmt.Sprintf("Current memory usage: %.2f%%\n", usedPercent))
 			if usedPercent > config.OOMThreshold {
 				wg.Add(2)
-				go notifyReboot(&wg, client, config)
-				go reboot(&wg, config)
+				notifyReboot(&wg, client, config)
+				reboot(&wg, config)
 				wg.Wait() // 阻塞，直到重启完成
 			}
 		}
