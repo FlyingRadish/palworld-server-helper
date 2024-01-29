@@ -128,6 +128,8 @@ func notifyReboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig
 
 func reboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig) {
 	defer wg.Done()
+	log("closing RCON client")
+	client.Close()
 	log("Waiting to restart...")
 	time.Sleep(10 * time.Second)
 	// 执行重启操作
