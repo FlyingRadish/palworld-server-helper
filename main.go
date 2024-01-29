@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"os"
 	"strconv"
+	"flag"
 
 	"pal-server-helper/pal"
 	"github.com/shirou/gopsutil/mem"
@@ -23,9 +24,17 @@ type HelperConfig struct {
 }
 
 func main() {
+	// 定义命令行参数
+	configFilePath := flag.String("c", "", "Path to the configuration file")
+	flag.Parse()
+	if *configFilePath == "" {
+		log("please use -config to setup config file path")
+		return
+	}
+
 	log("pal server helper started")
 	log("loading config...")
-	config, err := loadConfig("helper_config.json")
+	config, err := loadConfig(*configFilePath)
 	if err != nil {
 		fmt.Println("Error loading config:", err)
 		return
