@@ -1,8 +1,11 @@
 {
-    "serverIPAndPort": "127.0.0.1:25570",
-    "serverPassword": "srv_pwd",
+    "ip": "172.16.91.1",
+    "port": 25570,
+    "password": "gudoo2018",
+    "retryDelay": 10,
+    "retryCount": 3,
     "rebootScriptPath": "/path/to/you/restart.sh",
-    "oomThreshold": 70,
-    "checkIntervalSeconds": 5,
-    "rebootSeconds": 60
+    "rebootSeconds": 60,
+    "oomThreshold": 50,
+    "oomCheckIntervalSeconds": 5
 }

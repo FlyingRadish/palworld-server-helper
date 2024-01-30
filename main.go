@@ -1,26 +1,30 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
+	"os"
 	"os/exec"
+	"strconv"
 	"sync"
 	"time"
-	"encoding/json"
-	"os"
-	"strconv"
-	"flag"
 
 	"pal-server-helper/pal"
+
 	"github.com/shirou/gopsutil/mem"
 )
 
 type HelperConfig struct {
-	ServerIPAndPort 	 string `json:"serverIPAndPort"`
-	ServerPassword 	 	 string `json:"serverPassword"`
-	RebootScriptPath     string `json:"rebootScriptPath"`
-	OOMThreshold    	float64 `json:"oomThreshold"`
-	Interval         		int `json:"checkIntervalSeconds"`
-	RebootSeconds       	int `json:"rebootSeconds"`
+	IP               string  `json:"ip"`
+	Port             int     `json:"port"`
+	Password         string  `json:"password"`
+	RetryCount       int     `json:"retryCount"`
+	RetryDelay       int     `json:"retryDelay"`
+	RebootScriptPath string  `json:"rebootScriptPath"`
+	RebootSeconds    int     `json:"rebootSeconds"`
+	OOMThreshold     float64 `json:"oomThreshold"`
+	OOMCheckInterval int     `json:"oomCheckIntervalSeconds"`
 }
 
 func main() {
@@ -40,8 +44,8 @@ func main() {
 		return
 	}
 	log("Connect to server...")
-	client := pal.NewPalClient()
-	connectErr := client.Connect(config.ServerIPAndPort, config.ServerPassword)
+	client := pal.NewPalClient(config.IP, config.Port, config.Password, config.RetryDelay, config.RetryCount)
+	connectErr := client.Connect()
 	if connectErr != nil {
 		fmt.Println(connectErr)
 		return
@@ -55,9 +59,6 @@ func main() {
 		time.Sleep(10 * time.Second) // 可以根据实际需求调整间隔时间
 		// 在这里可以添加其他持续执行的逻辑
 	}
-
-	// 在程序即将退出时执行client.Close()
-	defer client.Close()
 }
 
 func log(message string) {
@@ -84,7 +85,7 @@ func loadConfig(filename string) (HelperConfig, error) {
 }
 
 func monitorMemoryUsage(client *pal.PalClient, config HelperConfig) {
-	ticker := time.NewTicker(time.Duration(config.Interval) * time.Second)
+	ticker := time.NewTicker(time.Duration(config.OOMCheckInterval) * time.Second)
 	defer ticker.Stop()
 
 	var wg sync.WaitGroup
@@ -125,7 +126,6 @@ func notifyReboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig
 	}
 }
 
-
 func reboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig) {
 	defer wg.Done()
 	log("closing RCON client")
@@ -140,14 +140,10 @@ func reboot(wg *sync.WaitGroup, client *pal.PalClient, config HelperConfig) {
 		fmt.Println("Failed to execute reboot script:", err)
 	} else {
 		log("Reboot script executed successfully")
+		client.Close()
 		// 阻塞2分钟，等待服务重启
 		log("Waiting for service to restart...")
 		time.Sleep(2 * time.Minute)
 		log("Service restarted")
-		connectErr := client.Connect(config.ServerIPAndPort, config.ServerPassword)
-		if connectErr != nil {
-			fmt.Println(connectErr)
-			return
-		}
 	}
 }

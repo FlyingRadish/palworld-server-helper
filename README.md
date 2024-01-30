@@ -19,12 +19,15 @@ RCONEnabled=True,RCONPort=25570
 修改`helper_config.json`
 ```
 {
-    "serverIPAndPort": "127.0.0.1:25570",           #服务器Rcon的IP和密码
-    "serverPassword": "srv_pwd",                    #服务器Rcon密码
+    "ip": "127.0.0.1",                              #服务器Rcon的IP
+    "port": 25570,                                  #服务器Rcon端口
+    "password": "srv_pwd",                          #服务器Rcon密码
+    "retryDelay": 10,                               #Rcon重试前等待时间，实测过短会导致再也连不上
+    "retryCount": 3,                                #Rcon重试次数
     "rebootScriptPath": "/path/to/you/restart.sh",  #重启服务器的脚本路径
-    "oomThreshold": 70,                             #内存阈值，超出该值将重启
-    "checkIntervalSeconds": 5,                      #内存占用检查间隔，如每5s检查一次
     "rebootSeconds": 60                             #重启倒计时，单位秒
+    "oomThreshold": 70,                             #内存阈值，超出该值将重启
+    "oomCheckIntervalSeconds": 5,                   #内存占用检查间隔，如每5s检查一次
 }
 ```
 ### 3. 创建后台服务
