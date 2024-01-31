@@ -6,6 +6,9 @@
     "retryCount": 3,
     "rebootScriptPath": "/path/to/you/restart.sh",
     "rebootSeconds": 60,
-    "oomThreshold": 50,
-    "oomCheckIntervalSeconds": 5
+    "oomThreshold": 90,
+    "oomCheckIntervalSeconds": 5,
+    "playerCheckInterval": 5,
+    "apiHost": "localhost",
+    "apiPort": 8311
 }

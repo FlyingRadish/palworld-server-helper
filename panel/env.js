@@ -1,0 +1,1 @@
+window.palServerHelper = {"apiUrl": "http://localhost:8311"}
