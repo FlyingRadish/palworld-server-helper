@@ -43,7 +43,6 @@ func (client *RCNClient) Close() {
 		return
 	}
 	client.conn.Close()
-	client.conn = nil
 }
 
 func (client *RCNClient) sendCommand(command string) (string, error) {
