@@ -32,7 +32,7 @@ func main() {
 		fmt.Println("Error loading config:", err)
 		return
 	}
-	api.UpdatePanelApi(config.ApiHost, config.ApiPort)
+	api.UpdatePanelApi(config.ApiHost, config.ApiPort, config.PanelPath)
 	fmt.Println("Connect to server...")
 	rcn.Create(config.IP, config.Port, config.Password, config.RetryCount, config.RetryDelay)
 	client := rcn.GetRCNClient()

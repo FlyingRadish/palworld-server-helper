@@ -10,5 +10,6 @@
     "oomCheckIntervalSeconds": 5,
     "playerCheckInterval": 5,
     "apiHost": "localhost",
-    "apiPort": 8311
+    "apiPort": 8311,
+    "panelPath": "/path/to/panel"
 }

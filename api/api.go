@@ -121,8 +121,8 @@ func RunApiServer(port int, panelPath string) {
 	router.Run(servePort)
 }
 
-func UpdatePanelApi(apiHost string, apiPort int) {
-	filePath := "dist/env.js"
+func UpdatePanelApi(apiHost string, apiPort int, panelPath string) {
+	filePath := panelPath + "/env.js"
 
 	// 删除文件
 	if _, err := os.Stat(filePath); err == nil {
