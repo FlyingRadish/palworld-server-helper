@@ -25,13 +25,14 @@ RCONEnabled=True,RCONPort=25570
     "password": "srv_pwd",                          #服务器Rcon密码
     "retryDelay": 10,                               #Rcon重试前等待时间，实测过短会导致再也连不上
     "retryCount": 3,                                #Rcon重试次数
-    "rebootScriptPath": "/path/to/you/restart.sh",  #重启服务器的脚本路径
+    "rebootScriptPath": "/path/to/your/restart.sh",  #重启服务器的脚本路径
     "rebootSeconds": 60                             #重启倒计时，单位秒
     "oomThreshold": 70,                             #内存阈值，超出该值将重启
     "oomCheckIntervalSeconds": 5,                   #内存占用检查间隔，如每5s检查一次
     "playerCheckInterval": 5,                       #在线玩家列表检测间隔，如每5s检查一次
     "apiHost": "host_ip_or_domain",                 #API服务器地址，可以写服务器IP，或域名，不能设为127.0.0.1/localhost
     "apiPort": 8311                                 #API服务器端口
+    "panelPath": "/path/to/panel"                   #前端面板路径(panel文件夹的路径)
 }
 ```
 ### 3. 创建后台服务

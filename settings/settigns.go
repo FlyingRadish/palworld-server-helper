@@ -19,6 +19,7 @@ type HelperConfig struct {
 	PlayerCheckInterval int     `json:"playerCheckInterval"`
 	ApiHost             string  `json:"apiHost"`
 	ApiPort             int     `json:"apiPort"`
+	PanelPath           string  `json:"panelPath"`
 }
 
 var configPath = "./helper_config.json"

@@ -29,7 +29,7 @@ type simpleParam struct {
 	Data string `json:"data"`
 }
 
-func RunApiServer(port int) {
+func RunApiServer(port int, panelPath string) {
 	router := gin.Default()
 	router.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -42,8 +42,8 @@ func RunApiServer(port int) {
 		c.Next()
 	})
 
-	router.Static("/panel", "./panel")
-	router.Static("/assets", "./panel/assets")
+	router.Static("/panel", panelPath)
+	router.Static("/assets", panelPath+"/assets")
 
 	// 返回当前在线玩家信息
 	router.GET("/api/players", func(c *gin.Context) {

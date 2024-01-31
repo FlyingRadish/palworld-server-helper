@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"pal-server-helper/api"
+	"pal-server-helper/common"
+	"pal-server-helper/pal"
 	"pal-server-helper/pal/rcn"
 	"pal-server-helper/settings"
 )
@@ -37,9 +39,9 @@ func main() {
 	fmt.Println("Connected")
 	defer client.Close()
 
-	// go common.MonitorMemoryUsage(config.OOMThreshold, config.OOMCheckInterval)
-	// go pal.MonitorPlayers(config.OOMCheckInterval)
-	go api.RunApiServer(config.ApiPort)
+	go common.MonitorMemoryUsage(config.OOMThreshold, config.OOMCheckInterval)
+	go pal.MonitorPlayers(config.OOMCheckInterval)
+	go api.RunApiServer(config.ApiPort, config.PanelPath)
 
 	// 主程序持续执行
 	for {
