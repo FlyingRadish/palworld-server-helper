@@ -10,6 +10,7 @@ import (
 	"pal-server-helper/pal"
 	"pal-server-helper/pal/rcn"
 	"pal-server-helper/settings"
+	"pal-server-helper/state"
 )
 
 func main() {
@@ -37,6 +38,7 @@ func main() {
 	rcn.Create(config.IP, config.Port, config.Password, config.RetryCount, config.RetryDelay)
 	client := rcn.GetRCNClient()
 	fmt.Println("Connected")
+	state.Update(state.Running)
 	defer client.Close()
 
 	go common.MonitorMemoryUsage(config.OOMThreshold, config.OOMCheckInterval)

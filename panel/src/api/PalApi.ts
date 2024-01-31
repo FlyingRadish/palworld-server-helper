@@ -6,6 +6,7 @@ import {
   MemStatus,
   RconParam,
   SimpleParam,
+  ServerStateResponse,
 } from "../model/PalApiModel"
 
 export function getMemoryStatus(): Promise<MemStatus> {
@@ -26,4 +27,8 @@ export function rcon(param: RconParam): Promise<SimpleParam> {
 
 export function reboot(param: RebootParam): Promise<void> {
   return request.post(`/api/reboot`, param)
+}
+
+export function getServerState(): Promise<ServerStateResponse> {
+  return request.get(`/api/state`)
 }

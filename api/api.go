@@ -9,6 +9,7 @@ import (
 	"pal-server-helper/common"
 	"pal-server-helper/pal"
 	"pal-server-helper/pal/rcn"
+	"pal-server-helper/state"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,6 +24,10 @@ type broadcastParam struct {
 
 type rconParam struct {
 	Command string `json:"command"`
+}
+
+type serverStateResponse struct {
+	State state.ServerState `json:"state"`
 }
 
 type simpleParam struct {
@@ -113,6 +118,11 @@ func RunApiServer(port int, panelPath string) {
 			return
 		}
 		c.JSON(http.StatusOK, memStatus)
+	})
+
+	// 返回当前服务器状态
+	router.GET("/api/state", func(c *gin.Context) {
+		c.JSON(http.StatusOK, serverStateResponse{State: state.Current()})
 	})
 
 	// Run the server on port 8080

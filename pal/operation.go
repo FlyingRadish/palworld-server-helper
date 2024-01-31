@@ -10,6 +10,7 @@ import (
 
 	"pal-server-helper/pal/rcn"
 	"pal-server-helper/settings"
+	"pal-server-helper/state"
 )
 
 func Reboot(needNotify bool) error {
@@ -17,6 +18,9 @@ func Reboot(needNotify bool) error {
 	config, err := settings.LoadConfig()
 	if err != nil {
 		return errors.New("reboot failed because config not loaded")
+	}
+	if !state.IsRunning() {
+		return errors.New("server is not running")
 	}
 	client := rcn.GetRCNClient()
 	if needNotify {
@@ -52,6 +56,8 @@ func reboot(wg *sync.WaitGroup, client *rcn.RCNClient, rebootScriptPath string) 
 	defer wg.Done()
 	fmt.Println("closing RCON client")
 	client.Close()
+	state.Update(state.Rebooting)
+	defer state.Update(state.Running)
 	fmt.Println("Waiting to restart...")
 	time.Sleep(10 * time.Second)
 	// 执行重启操作

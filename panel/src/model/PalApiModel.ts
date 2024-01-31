@@ -24,3 +24,7 @@ export interface RconParam {
 export interface SimpleParam {
     data: string
 }
+
+export interface ServerStateResponse {
+    state: string
+}

@@ -1,7 +1,9 @@
 package rcn
 
 import (
+	"errors"
 	"fmt"
+	"pal-server-helper/state"
 	"strconv"
 
 	"github.com/FlyingRadish/rcong"
@@ -46,6 +48,9 @@ func (client *RCNClient) Close() {
 }
 
 func (client *RCNClient) sendCommand(command string) (string, error) {
+	if !state.IsRunning() {
+		return "", errors.New("server is not running")
+	}
 	resp, err := client.conn.ExecCommand(command)
 	if err != nil {
 		return "", fmt.Errorf("Failed to send RCON command: %v", err)

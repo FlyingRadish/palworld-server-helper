@@ -1,8 +1,15 @@
 <template>
   <div class="flex-col-nowrap-center-start-center" style="width: 100%; max-width: 400px; margin-right: 8px;">
-    <n-card title="内存状态">
-      <div class="flex-row-nowrap-center-center-center">
+    <n-card title="状态">
+      <template #header-extra>
+        <div class="flex-row-nowrap-start-start-center">
+          <div>{{ stateText }}</div>
+          <div :style="stateStyle"></div>
+        </div>
+      </template>
+      <div class="flex-col-nowrap-center-center-center">
         <n-progress type="dashboard" gap-position="bottom" :percentage="state.memory.usedPercent" />
+        <div style="font-weight: 600;">内存</div>
       </div>
     </n-card>
     <n-card title="在线玩家">
@@ -13,13 +20,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive } from 'vue'
+import { computed, onMounted, onUnmounted, reactive } from 'vue'
 import { MemStatus, PalPlayer } from '../model/PalApiModel'
-import { getMemoryStatus, getOnlinePlayers } from '../api/PalApi'
+import { getMemoryStatus, getOnlinePlayers, getServerState } from '../api/PalApi'
 
 
 const state = reactive({
   timer: undefined as undefined | any,
+  state: "unknown",
   onlinePlayers: {
     data: [] as Array<PalPlayer>,
   },
@@ -29,7 +37,46 @@ const state = reactive({
   }
 })
 
+const stateText = computed(() => {
+  switch (state.state) {
+    case "running":
+      return "运行中"
+    case "rebooting":
+      return "重启中"
+    default:
+      return "状态未知"
+  }
+})
 
+const stateStyle = computed(() => {
+  let color = "#999"
+  switch (state.state) {
+    case "running":
+      color = "#00bc00"
+      break
+    case "rebooting":
+      color = "#f1521c"
+      break
+    default:
+      color = "#999"
+      break
+  }
+  return {
+    "background-color": color,
+    "width": "8px",
+    "height": "8px",
+    "border-radius": "8px",
+    "margin-left": "8px"
+  }
+})
+
+const onRefreshState = async () => {
+  try {
+    let res = await getServerState()
+    state.state = res.state
+  } catch (error: any) {
+  }
+}
 
 const onRefreshMem = async () => {
   try {
@@ -63,19 +110,20 @@ const onRefreshOnlinePlayer = async () => {
 
 const startTimer = () => {
   state.timer = setInterval(() => {
+    onRefreshState()
     onRefreshMem()
     onRefreshOnlinePlayer()
   }, 5000)
 }
 
-onMounted(()=> {
+onMounted(() => {
   startTimer()
 })
 
-onUnmounted(()=> {
+onUnmounted(() => {
   if (state.timer) {
     clearInterval(state.timer)
-  }  
+  }
 })
 
 </script>
