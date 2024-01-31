@@ -15,7 +15,8 @@ Ubuntu x64
 ```
 RCONEnabled=True,RCONPort=25570
 ```
-### 2. 配置
+### 2. 下载release后解压
+### 3. 配置
 修改`helper_config.json`
 ```
 {
@@ -28,6 +29,9 @@ RCONEnabled=True,RCONPort=25570
     "rebootSeconds": 60                             #重启倒计时，单位秒
     "oomThreshold": 70,                             #内存阈值，超出该值将重启
     "oomCheckIntervalSeconds": 5,                   #内存占用检查间隔，如每5s检查一次
+    "playerCheckInterval": 5,                       #在线玩家列表检测间隔，如每5s检查一次
+    "apiHost": "host_ip_or_domain",                 #API服务器地址，可以写服务器IP，或域名，不能设为127.0.0.1/localhost
+    "apiPort": 8311                                 #API服务器端口
 }
 ```
 ### 3. 创建后台服务

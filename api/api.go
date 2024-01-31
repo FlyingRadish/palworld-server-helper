@@ -42,9 +42,8 @@ func RunApiServer(port int) {
 		c.Next()
 	})
 
-	router.Static("/panel", "./dist")
-	router.Static("/assets", "./dist/assets")
-	// router.Static("env.js", "./dist/env.js")
+	router.Static("/panel", "./panel")
+	router.Static("/assets", "./panel/assets")
 
 	// 返回当前在线玩家信息
 	router.GET("/api/players", func(c *gin.Context) {
