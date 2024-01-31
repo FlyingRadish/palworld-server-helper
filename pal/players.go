@@ -46,6 +46,11 @@ func parsePlayerInfos(res string) []PalPlayer {
 			continue
 		}
 		playerLine := strings.Split(lines[i], ",")
+		if len(playerLine) < 3 {
+			fmt.Println("wrong info")
+			fmt.Println(playerLine)
+			continue
+		}
 		player := PalPlayer{
 			Name:    removeExtraTerminator(playerLine[0]),
 			Uid:     removeExtraTerminator(playerLine[1]),
