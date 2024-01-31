@@ -22,7 +22,7 @@ var instance RCNClient
 func Create(ip string, port int, password string, retryCount int, retryDelay int) {
 	ipAndPort := ip + ":" + strconv.Itoa(port)
 	conn := rcong.NewRCONConnection(ip, port, password, retryCount, retryDelay)
-	// conn.Connect()
+	conn.Connect()
 	instance = RCNClient{
 		conn:       conn,
 		ip:         ip,
