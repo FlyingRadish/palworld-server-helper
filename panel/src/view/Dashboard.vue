@@ -117,6 +117,9 @@ const startTimer = () => {
 }
 
 onMounted(() => {
+  onRefreshState()
+  onRefreshMem()
+  onRefreshOnlinePlayer()
   startTimer()
 })
 
